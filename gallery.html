@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery | Orca Detailing — Upper Valley VT & NH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: #0C1929; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    img { display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    :root {
+      --navy:   #070E1C;
+      --navy2:  #0C1929;
+      --blue:   #2278B5;
+      --blue-l: #3A9CD6;
+      --blue-d: #155A8A;
+      --white:  #FFFFFF;
+      --off:    #F2F7FC;
+      --border: rgba(34,120,181,0.14);
+      --borderB:rgba(34,120,181,0.35);
+      --muted:  #6B8FA8;
+      --ts:     #4A7A9B;
+      --text:   #0C1929;
+    }
+
+    .fd { font-family: 'Bebas Neue', sans-serif; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.24em; color: var(--blue); margin-bottom: 10px; text-transform: uppercase; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(34px,5vw,52px); line-height: 1; color: var(--navy2); }
+    .section-title.light { color: #fff; }
+    .blue-bar { height: 3px; background: linear-gradient(90deg, var(--blue), var(--blue-l)); border-radius: 2px; }
+
+    /* ── Buttons ── */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; letter-spacing: 0.04em; border-radius: 6px; cursor: pointer; transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s; position: relative; overflow: hidden; border: none; font-family: inherit; font-size: 14px; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn-blue { background: linear-gradient(135deg, var(--blue), var(--blue-d)); color: #fff; box-shadow: 0 4px 18px rgba(34,120,181,0.38); padding: 11px 22px; }
+    .btn-blue:hover { box-shadow: 0 8px 28px rgba(34,120,181,0.5); }
+    .btn-outline-blue { border: 2px solid var(--borderB) !important; color: var(--blue); padding: 10px 20px; background: transparent; }
+    .btn-outline-blue:hover { background: rgba(34,120,181,0.06); border-color: var(--blue) !important; color: var(--navy2); }
+    .btn-outline-dark { border: 2px solid rgba(255,255,255,0.35) !important; color: #fff; padding: 10px 20px; background: transparent; }
+    .btn-outline-dark:hover { background: rgba(255,255,255,0.1); border-color: #fff !important; }
+    .btn-lg { font-size: 16px; padding: 15px 36px; border-radius: 8px; }
+    .btn-xl { font-size: 17px; padding: 17px 44px; border-radius: 8px; }
+    .ripple-spot { position:absolute; border-radius:50%; background:rgba(255,255,255,0.28); transform:scale(0); animation:rpl 0.55s linear; pointer-events:none; }
+    @keyframes rpl { to { transform:scale(5); opacity:0; } }
+
+    /* ══ NAV ══════════════════════════════════════════════════════════════ */
+    #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.96); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(34,120,181,0.1); box-shadow: 0 1px 20px rgba(12,25,41,0.07); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-link { font-size: 14px; font-weight: 600; color: var(--ts); transition: color 0.2s; position: relative; padding-bottom: 2px; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; right:0; height:2px; background:var(--blue); transform:scaleX(0); transform-origin:left; transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .nav-link:hover, .nav-link.active { color: var(--navy2); }
+    .nav-link:hover::after, .nav-link.active::after { transform:scaleX(1); }
+    .nav-ctas { display: flex; align-items: center; gap: 10px; }
+    #ham { display: none; background: none; border: none; cursor: pointer; padding: 6px; }
+    #mob-nav { display: none; flex-direction: column; padding: 20px 24px 28px; gap: 18px; border-top: 1px solid var(--border); background: #fff; }
+    #mob-nav.open { display: flex; }
+    .mob-link { font-size: 16px; font-weight: 600; color: var(--navy2); }
+    @media(max-width:768px){ .nav-links,.nav-ctas{display:none;} #ham{display:block;} }
+
+    /* ══ PAGE HERO ════════════════════════════════════════════════════════ */
+    #page-hero {
+      padding-top: 72px;
+      background: linear-gradient(160deg, #060D1A 0%, #0D1E36 60%, #07111F 100%);
+      position: relative; overflow: hidden;
+    }
+    #page-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 80% at 20% 50%, rgba(34,120,181,0.18) 0%, transparent 65%); pointer-events:none; }
+    .hero-bubble { position:absolute; border-radius:50%; pointer-events:none; animation:brise linear infinite; }
+    @keyframes brise { 0%{transform:translateY(0) translateX(0);opacity:0} 8%{opacity:1} 92%{opacity:0.4} 100%{transform:translateY(-100vh) translateX(var(--dx));opacity:0} }
+    .page-hero-inner { position:relative; z-index:2; padding:72px 24px 80px; text-align:center; }
+    .page-hero-label { font-size:11px; font-weight:700; letter-spacing:0.28em; color:var(--blue-l); text-transform:uppercase; margin-bottom:14px; }
+    .page-hero-h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(52px,8vw,96px); line-height:0.92; letter-spacing:-0.01em; color:#fff; margin-bottom:18px; }
+    .page-hero-h1 .acc { color:var(--blue-l); }
+    .page-hero-sub { font-size:16px; color:rgba(255,255,255,0.52); max-width:480px; margin:0 auto; line-height:1.75; }
+
+    /* ══ STATS STRIP ══════════════════════════════════════════════════════ */
+    #stats { background: var(--off); border-bottom: 1px solid var(--border); }
+    .stats-row { display:flex; align-items:stretch; }
+    .stat-item { flex:1; padding:24px 20px; text-align:center; border-right:1px solid var(--border); }
+    .stat-item:last-child { border-right:none; }
+    .stat-num { font-family:'Bebas Neue',sans-serif; font-size:38px; color:var(--blue); line-height:1; }
+    .stat-lbl { font-size:11.5px; font-weight:600; color:var(--muted); letter-spacing:0.08em; margin-top:3px; text-transform:uppercase; }
+    @media(max-width:600px){ .stats-row{flex-wrap:wrap;} .stat-item{flex:1 1 50%;border-bottom:1px solid var(--border);} }
+
+    /* ══ FILTER TABS ══════════════════════════════════════════════════════ */
+    #filter-bar { position:sticky; top:72px; z-index:50; background:rgba(255,255,255,0.97); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+    .filter-inner { display:flex; align-items:center; gap:6px; padding:14px 0; overflow-x:auto; scrollbar-width:none; }
+    .filter-inner::-webkit-scrollbar { display:none; }
+    .filter-btn { flex-shrink:0; font-size:12.5px; font-weight:700; letter-spacing:0.08em; padding:8px 18px; border-radius:999px; border:1.5px solid var(--border); background:transparent; color:var(--ts); cursor:pointer; transition:background 0.2s, border-color 0.2s, color 0.2s; }
+    .filter-btn:hover { border-color:var(--borderB); color:var(--navy2); }
+    .filter-btn.active { background:linear-gradient(135deg,var(--blue),var(--blue-d)); color:#fff; border-color:transparent; box-shadow:0 3px 12px rgba(34,120,181,0.32); }
+
+    /* ══ GALLERY GRID ═════════════════════════════════════════════════════ */
+    #gallery-section { background:#fff; padding:56px 24px 80px; }
+    .photo-grid { columns:3; column-gap:18px; }
+    .photo-card { break-inside:avoid; margin-bottom:18px; border-radius:18px; overflow:hidden; background:#fff; border:1px solid var(--border); box-shadow:0 2px 16px rgba(12,25,41,0.07); transition:box-shadow 0.28s,transform 0.3s cubic-bezier(0.34,1.56,0.64,1); cursor:pointer; }
+    .photo-card:hover { box-shadow:0 12px 44px rgba(12,25,41,0.14),0 0 0 1px rgba(34,120,181,0.2); transform:translateY(-5px); }
+    .photo-card.hidden { display:none; }
+    .photo-wrap { position:relative; overflow:hidden; }
+    .photo-wrap img { width:100%; display:block; transition:transform 0.55s cubic-bezier(0.34,1.56,0.64,1); }
+    .photo-card:hover .photo-wrap img { transform:scale(1.06); }
+    .photo-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(7,14,28,0.72) 0%, rgba(7,14,28,0.12) 50%, transparent 100%); opacity:0; transition:opacity 0.3s; display:flex; align-items:flex-end; justify-content:flex-end; padding:16px; }
+    .photo-card:hover .photo-overlay { opacity:1; }
+    .photo-expand-btn { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:8px; padding:8px 14px; font-size:11.5px; font-weight:700; letter-spacing:0.08em; color:#fff; backdrop-filter:blur(6px); transition:background 0.2s; }
+    .photo-expand-btn:hover { background:rgba(255,255,255,0.25); }
+    .photo-cat-badge { position:absolute; top:12px; left:12px; font-size:10px; font-weight:800; letter-spacing:0.16em; color:#fff; background:rgba(34,120,181,0.78); border:1px solid rgba(255,255,255,0.2); backdrop-filter:blur(6px); padding:4px 12px; border-radius:999px; text-transform:uppercase; }
+    .photo-info { padding:14px 16px 16px; }
+    .photo-service { font-size:13px; font-weight:700; color:var(--navy2); }
+    .photo-loc { font-size:12px; color:var(--muted); margin-top:3px; }
+
+    /* empty state */
+    .photo-empty { display:none; text-align:center; padding:80px 24px; }
+    .photo-empty.show { display:block; }
+    .photo-empty p { font-size:15px; color:var(--muted); }
+
+    /* placeholder slot cards */
+    .photo-slot { break-inside:avoid; margin-bottom:18px; border-radius:18px; overflow:hidden; border:2px dashed rgba(34,120,181,0.2); background:rgba(34,120,181,0.02); display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:240px; gap:10px; }
+    .photo-slot-icon { width:48px; height:48px; border-radius:12px; background:rgba(34,120,181,0.08); border:1.5px solid rgba(34,120,181,0.2); display:flex; align-items:center; justify-content:center; }
+    .photo-slot p { font-size:12.5px; font-weight:600; color:var(--muted); letter-spacing:0.04em; }
+    .photo-slot span { font-size:11px; color:rgba(34,120,181,0.5); }
+
+    @media(max-width:900px){ .photo-grid{columns:2;} }
+    @media(max-width:540px){ .photo-grid{columns:1;} }
+
+    /* Reveal */
+    .rev { opacity:0; transform:translateY(24px); transition:opacity 0.55s ease,transform 0.55s ease; }
+    .rev.in { opacity:1; transform:none; }
+
+    /* ══ LIGHTBOX ═════════════════════════════════════════════════════════ */
+    #lightbox { position:fixed; inset:0; z-index:999; background:rgba(6,13,26,0.95); display:flex; align-items:center; justify-content:center; padding:24px; opacity:0; pointer-events:none; transition:opacity 0.3s; backdrop-filter:blur(12px); }
+    #lightbox.open { opacity:1; pointer-events:all; }
+    #lb-img { max-width:100%; max-height:90vh; border-radius:12px; object-fit:contain; transform:scale(0.92); transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 32px 80px rgba(0,0,0,0.6); }
+    #lightbox.open #lb-img { transform:scale(1); }
+    #lb-close { position:absolute; top:20px; right:24px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; font-size:20px; transition:background 0.2s; }
+    #lb-close:hover { background:rgba(255,255,255,0.2); }
+    #lb-info { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); backdrop-filter:blur(8px); border-radius:10px; padding:10px 20px; color:rgba(255,255,255,0.75); font-size:13px; font-weight:600; white-space:nowrap; }
+    #lb-prev, #lb-next { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:50%; width:48px; height:48px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; transition:background 0.2s; }
+    #lb-prev { left:16px; }
+    #lb-next { right:16px; }
+    #lb-prev:hover, #lb-next:hover { background:rgba(255,255,255,0.2); }
+
+    /* ══ CTA ══════════════════════════════════════════════════════════════ */
+    #cta { padding:88px 24px; text-align:center; position:relative; overflow:hidden;
+      background:linear-gradient(135deg, #0A1628 0%, #112440 50%, #0A1628 100%); }
+    #cta::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 70% at 50% 50%,rgba(34,120,181,0.16) 0%,transparent 65%); pointer-events:none; }
+    .cta-content { position:relative; z-index:1; }
+
+    /* ══ FOOTER ═══════════════════════════════════════════════════════════ */
+    footer { background:#070E1C; border-top:1px solid rgba(34,120,181,0.12); padding:56px 24px 28px; }
+    .footer-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:48px; margin-bottom:40px; }
+    .footer-col h4 { font-size:11px; font-weight:700; letter-spacing:0.18em; color:rgba(255,255,255,0.45); text-transform:uppercase; margin-bottom:16px; }
+    .footer-links { display:flex; flex-direction:column; gap:10px; }
+    .footer-link { font-size:13.5px; color:rgba(255,255,255,0.45); transition:color 0.2s; }
+    .footer-link:hover { color:#fff; }
+    .footer-contact-item { display:flex; align-items:flex-start; gap:10px; font-size:13.5px; color:rgba(255,255,255,0.45); margin-bottom:12px; }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,0.06); padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+    @media(max-width:768px){ .footer-grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════════════════════════ -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html"><img src="brand_assests/Gemini_Generated_Image_wtq0crwtq0crwtq0-removebg-preview%20(1).png" alt="Orca Detailing" style="height:72px;width:auto;"></a>
+      <div class="nav-links">
+        <a href="index.html#services" class="nav-link">Services</a>
+        <a href="gallery.html"        class="nav-link active">Gallery</a>
+        <a href="index.html#pricing"  class="nav-link">Pricing</a>
+        <a href="index.html#areas"    class="nav-link">Service Areas</a>
+        <a href="book.html"           class="nav-link">Contact</a>
+      </div>
+      <div class="nav-ctas">
+        <a href="book.html"      class="btn btn-blue rip">BOOK NOW</a>
+        <a href="tel:6036780521" class="btn btn-outline-blue">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42A2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.72-.72a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          CALL US
+        </a>
+      </div>
+      <button id="ham" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0C1929" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mob-nav">
+    <a href="index.html#services" class="mob-link mlink">Services</a>
+    <a href="gallery.html"        class="mob-link mlink">Gallery</a>
+    <a href="index.html#pricing"  class="mob-link mlink">Pricing</a>
+    <a href="index.html#areas"    class="mob-link mlink">Service Areas</a>
+    <a href="book.html"           class="mob-link mlink">Contact</a>
+    <div style="display:flex;gap:10px;margin-top:6px;">
+      <a href="book.html"      class="btn btn-blue rip mlink" style="flex:1;">BOOK NOW</a>
+      <a href="tel:6036780521" class="btn btn-outline-blue mlink" style="flex:1;">CALL US</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ PAGE HERO ══════════════════════════════════════════════════════════ -->
+<section id="page-hero">
+  <div id="hero-bbl" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;"></div>
+  <div class="page-hero-inner">
+    <p class="page-hero-label">Orca Detailing · Upper Valley VT &amp; NH</p>
+    <h1 class="page-hero-h1">
+      FRESH FROM<br><span class="acc">THE DEEP.</span>
+    </h1>
+    <p class="page-hero-sub">Every car that surfaces from our hands looks like it was just born from the ocean — spotless, gleaming, and ready to turn heads.</p>
+  </div>
+  <!-- Wave hero → stats -->
+  <div style="line-height:0;position:relative;z-index:2;"><svg viewBox="0 0 1440 48" style="display:block;width:100%;" preserveAspectRatio="none"><path d="M0,24 C360,48 720,0 1080,32 C1280,46 1380,26 1440,18 L1440,48 L0,48Z" fill="#F2F7FC"/></svg></div>
+</section>
+
+<!-- ══ STATS ══════════════════════════════════════════════════════════════ -->
+<div id="stats">
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-item rev"><div class="stat-num">100+</div><div class="stat-lbl">Cars Detailed</div></div>
+      <div class="stat-item rev"><div class="stat-num">5★</div><div class="stat-lbl">Average Rating</div></div>
+      <div class="stat-item rev"><div class="stat-num">3</div><div class="stat-lbl">Packages Available</div></div>
+      <div class="stat-item rev"><div class="stat-num">2</div><div class="stat-lbl">States Served</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FILTER BAR ═════════════════════════════════════════════════════════ -->
+<div id="filter-bar">
+  <div class="container">
+    <div class="filter-inner">
+      <button class="filter-btn active" data-filter="all">All Work</button>
+      <button class="filter-btn" data-filter="exterior">Exterior</button>
+      <button class="filter-btn" data-filter="interior">Interior</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GALLERY GRID ════════════════════════════════════════════════════════ -->
+<section id="gallery-section">
+  <div class="container">
+    <div class="photo-grid" id="photo-grid">
+
+      <!-- EXTERIOR PHOTOS -->
+
+      <div class="photo-card rev" data-cat="exterior" data-label="Exterior Detail · Upper Valley, VT">
+        <div class="photo-wrap">
+          <img src="brand_assests/IMG_3549.jpeg" alt="Red Toyota exterior detail" loading="lazy">
+          <div class="photo-overlay"><div class="photo-expand-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View Full Size</div></div>
+          <span class="photo-cat-badge">Exterior</span>
+        </div>
+        <div class="photo-info"><div class="photo-service">Exterior Detail</div><div class="photo-loc">Upper Valley, VT</div></div>
+      </div>
+
+      <div class="photo-card rev" data-cat="exterior" data-label="Exterior Detail · Lebanon, NH">
+        <div class="photo-wrap">
+          <img src="brand_assests/IMG_3779.jpeg" alt="Black Jeep exterior detail" loading="lazy">
+          <div class="photo-overlay"><div class="photo-expand-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View Full Size</div></div>
+          <span class="photo-cat-badge">Exterior</span>
+        </div>
+        <div class="photo-info"><div class="photo-service">Exterior Detail</div><div class="photo-loc">Lebanon, NH</div></div>
+      </div>
+
+      <div class="photo-card rev" data-cat="exterior" data-label="Exterior Detail · Hanover, NH">
+        <div class="photo-wrap">
+          <img src="brand_assests/IMG_4093.jpeg" alt="Black BMW exterior detail" loading="lazy">
+          <div class="photo-overlay"><div class="photo-expand-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View Full Size</div></div>
+          <span class="photo-cat-badge">Exterior</span>
+        </div>
+        <div class="photo-info"><div class="photo-service">Exterior Detail</div><div class="photo-loc">Hanover, NH</div></div>
+      </div>
+
+      <div class="photo-card rev" data-cat="exterior" data-label="Exterior Detail · Norwich, VT">
+        <div class="photo-wrap">
+          <img src="brand_assests/IMG_3814.jpeg" alt="Audi exterior detail" loading="lazy">
+          <div class="photo-overlay"><div class="photo-expand-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View Full Size</div></div>
+          <span class="photo-cat-badge">Exterior</span>
+        </div>
+        <div class="photo-info"><div class="photo-service">Exterior Detail</div><div class="photo-loc">Norwich, VT</div></div>
+      </div>
+
+      <!-- INTERIOR PHOTOS -->
+
+      <div class="photo-card rev" data-cat="interior" data-label="Interior Detail · Hanover, NH">
+        <div class="photo-wrap">
+          <img src="brand_assests/IMG_3818.jpeg" alt="Audi interior dashboard detail" loading="lazy">
+          <div class="photo-overlay"><div class="photo-expand-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View Full Size</div></div>
+          <span class="photo-cat-badge">Interior</span>
+        </div>
+        <div class="photo-info"><div class="photo-service">Interior Detail</div><div class="photo-loc">Hanover, NH</div></div>
+      </div>
+
+      <div class="photo-card rev" data-cat="interior" data-label="Interior Detail · Lebanon, NH">
+        <div class="photo-wrap">
+          <img src="brand_assests/IMG_3775.jpeg" alt="Jeep interior detail" loading="lazy">
+          <div class="photo-overlay"><div class="photo-expand-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View Full Size</div></div>
+          <span class="photo-cat-badge">Interior</span>
+        </div>
+        <div class="photo-info"><div class="photo-service">Interior Detail</div><div class="photo-loc">Lebanon, NH</div></div>
+      </div>
+
+      <div class="photo-card rev" data-cat="interior" data-label="Interior Detail · Woodstock, VT">
+        <div class="photo-wrap">
+          <img src="brand_assests/IMG_3848.jpeg" alt="Black leather rear seats detail" loading="lazy">
+          <div class="photo-overlay"><div class="photo-expand-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View Full Size</div></div>
+          <span class="photo-cat-badge">Interior</span>
+        </div>
+        <div class="photo-info"><div class="photo-service">Interior Detail</div><div class="photo-loc">Woodstock, VT</div></div>
+      </div>
+
+      <div class="photo-card rev" data-cat="interior" data-label="Interior Detail · Lyme, NH">
+        <div class="photo-wrap">
+          <img src="brand_assests/IMG_3845.jpeg" alt="Lexus interior steering wheel detail" loading="lazy">
+          <div class="photo-overlay"><div class="photo-expand-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View Full Size</div></div>
+          <span class="photo-cat-badge">Interior</span>
+        </div>
+        <div class="photo-info"><div class="photo-service">Interior Detail</div><div class="photo-loc">Lyme, NH</div></div>
+      </div>
+
+      <div class="photo-card rev" data-cat="interior" data-label="Interior Detail · Quechee, VT">
+        <div class="photo-wrap">
+          <img src="brand_assests/IMG_4095.jpeg" alt="BMW interior detail" loading="lazy">
+          <div class="photo-overlay"><div class="photo-expand-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View Full Size</div></div>
+          <span class="photo-cat-badge">Interior</span>
+        </div>
+        <div class="photo-info"><div class="photo-service">Interior Detail</div><div class="photo-loc">Quechee, VT</div></div>
+      </div>
+
+      <!-- Empty state -->
+      <div class="photo-empty" id="empty-state">
+        <p>No photos in this category yet — check back soon.</p>
+      </div>
+
+    </div>
+
+    <!-- More coming note -->
+    <div class="rev" style="text-align:center;margin-top:52px;padding:32px;background:var(--off);border-radius:18px;border:1px solid var(--border);">
+      <p style="font-size:11px;font-weight:700;letter-spacing:0.2em;color:var(--blue);text-transform:uppercase;margin-bottom:8px;">Always Growing</p>
+      <p style="font-size:15px;color:var(--ts);line-height:1.7;max-width:480px;margin:0 auto 20px;">More photos surface after every job. Have a photo from your detail? Text it to us and we'll add it to the wall.</p>
+      <a href="tel:6036780521" class="btn btn-outline-blue">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42A2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.72-.72a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        (603) 678-0521
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Wave white → dark -->
+<div style="background:#fff;line-height:0;"><svg viewBox="0 0 1440 50" style="display:block;width:100%;" preserveAspectRatio="none"><path d="M0,25 C360,50 720,0 1080,30 C1280,44 1380,24 1440,18 L1440,50 L0,50Z" fill="#0A1628"/></svg></div>
+
+<!-- ══ CTA ════════════════════════════════════════════════════════════════ -->
+<section id="cta">
+  <div class="cta-content">
+    <p class="section-label" style="color:var(--blue-l);text-align:center;margin-bottom:12px;">READY TO GET YOUR RESULT?</p>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,6vw,64px);color:#fff;text-align:center;margin-bottom:20px;line-height:1.05;">YOUR CAR COULD BE<br><span style="color:var(--blue-l);">NEXT ON THIS WALL.</span></h2>
+    <p style="text-align:center;font-size:16px;color:rgba(255,255,255,0.55);max-width:420px;margin:0 auto 40px;line-height:1.7;">Book your detail and see the difference. We'll make sure you're proud to park anywhere.</p>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+      <a href="book.html" class="btn btn-blue btn-xl rip">BOOK NOW</a>
+      <a href="tel:6036780521" class="btn btn-outline-dark btn-xl">CALL (603) 678-0521</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img src="brand_assests/Gemini_Generated_Image_wtq0crwtq0crwtq0-removebg-preview%20(1).png" alt="Orca Detailing" style="height:72px;margin-bottom:16px;">
+        <p style="font-size:13.5px;color:rgba(255,255,255,0.4);line-height:1.75;max-width:280px;">Premium mobile car detailing serving the Upper Valley region of Vermont and New Hampshire.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <div class="footer-links">
+          <a href="index.html#services"     class="footer-link">Services</a>
+          <a href="gallery.html"            class="footer-link">Gallery</a>
+          <a href="index.html#pricing"      class="footer-link">Pricing</a>
+          <a href="index.html#testimonials" class="footer-link">Reviews</a>
+          <a href="index.html#areas"        class="footer-link">Service Areas</a>
+          <a href="book.html"               class="footer-link">Book Now</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <div class="footer-contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue-l)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42A2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.72-.72a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <a href="tel:6036780521" style="color:rgba(255,255,255,0.4);transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">(603) 678-0521</a>
+        </div>
+        <div class="footer-contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue-l)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Upper Valley<br>Vermont &amp; New Hampshire</span>
+        </div>
+        <div class="footer-contact-item" style="align-items:center;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue-l)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Mon – Sat, 7am – 6pm</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p style="font-size:12px;color:rgba(255,255,255,0.25);">&copy; 2025 Orca Detailing. All rights reserved.</p>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.25);">Upper Valley · Vermont · New Hampshire</p>
+        <a href="admin.html" style="font-size:11px;color:rgba(34,120,181,0.3);transition:color 0.2s;" onmouseover="this.style.color='rgba(34,120,181,0.6)'" onmouseout="this.style.color='rgba(34,120,181,0.3)'">Admin</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ LIGHTBOX ══════════════════════════════════════════════════════════ -->
+<div id="lightbox">
+  <button id="lb-close" aria-label="Close">✕</button>
+  <button id="lb-prev" aria-label="Previous">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <img id="lb-img" src="" alt="">
+  <button id="lb-next" aria-label="Next">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <div id="lb-info"></div>
+</div>
+
+<script>
+// Nav
+document.getElementById('ham').addEventListener('click',()=>document.getElementById('mob-nav').classList.toggle('open'));
+document.querySelectorAll('.mlink').forEach(l=>l.addEventListener('click',()=>document.getElementById('mob-nav').classList.remove('open')));
+
+// Hero bubbles
+(function(){
+  const c=document.getElementById('hero-bbl');
+  for(let i=0;i<28;i++){
+    const b=document.createElement('div');
+    b.className='hero-bubble';
+    const sz=Math.random()*36+8;
+    const op=Math.random()*.2+.12;
+    const bop=Math.random()*.38+.24;
+    const dx=(Math.random()-.5)*120;
+    b.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:-${sz}px;`+
+      `background:rgba(34,120,181,${op});border:1.5px solid rgba(34,120,181,${bop});`+
+      `box-shadow:inset ${-sz*.1}px ${-sz*.1}px ${sz*.28}px rgba(255,255,255,0.36),`+
+              `0 0 ${sz*.4}px rgba(34,120,181,${op*.5});`+
+      `--dx:${dx}px;animation-duration:${Math.random()*14+8}s;animation-delay:${Math.random()*14}s;`;
+    c.appendChild(b);
+  }
+})();
+
+// Scroll reveal
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('in'),i*60); ro.unobserve(e.target); }
+  });
+},{threshold:0.07});
+document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
+
+// Ripple
+document.querySelectorAll('.rip').forEach(btn=>btn.addEventListener('click',function(e){
+  const r=document.createElement('span'); r.className='ripple-spot';
+  const rect=this.getBoundingClientRect(); const s=Math.max(rect.width,rect.height)*2;
+  r.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-rect.left-s/2}px;top:${e.clientY-rect.top-s/2}px;`;
+  this.appendChild(r); setTimeout(()=>r.remove(),700);
+}));
+
+// Filter
+const filterBtns = document.querySelectorAll('.filter-btn');
+const cards = document.querySelectorAll('.photo-card');
+const emptyState = document.getElementById('empty-state');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    let visible = 0;
+    cards.forEach(card => {
+      const show = f === 'all' || card.dataset.cat === f;
+      card.classList.toggle('hidden', !show);
+      if(show) visible++;
+    });
+    emptyState.classList.toggle('show', visible === 0);
+  });
+});
+
+// Lightbox
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lb-img');
+const lbInfo = document.getElementById('lb-info');
+let lbCards = [], lbIdx = 0;
+
+function openLightbox(cards, idx) {
+  lbCards = cards;
+  lbIdx = idx;
+  showLbItem(lbIdx);
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function showLbItem(i) {
+  const card = lbCards[i];
+  const img = card.querySelector('img');
+  lbImg.src = img.src;
+  lbImg.alt = img.alt;
+  lbInfo.textContent = card.dataset.label || '';
+}
+
+document.querySelectorAll('.photo-card').forEach((card, i, arr) => {
+  card.addEventListener('click', () => {
+    const visible = [...arr].filter(c => !c.classList.contains('hidden'));
+    const visIdx = visible.indexOf(card);
+    if(visIdx >= 0) openLightbox(visible, visIdx);
+  });
+});
+
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+lb.addEventListener('click', e => { if(e.target === lb) closeLightbox(); });
+document.getElementById('lb-prev').addEventListener('click', e => {
+  e.stopPropagation();
+  lbIdx = (lbIdx - 1 + lbCards.length) % lbCards.length;
+  showLbItem(lbIdx);
+});
+document.getElementById('lb-next').addEventListener('click', e => {
+  e.stopPropagation();
+  lbIdx = (lbIdx + 1) % lbCards.length;
+  showLbItem(lbIdx);
+});
+document.addEventListener('keydown', e => {
+  if(!lb.classList.contains('open')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowLeft') { lbIdx=(lbIdx-1+lbCards.length)%lbCards.length; showLbItem(lbIdx); }
+  if(e.key === 'ArrowRight') { lbIdx=(lbIdx+1)%lbCards.length; showLbItem(lbIdx); }
+});
+</script>
+</body>
+</html>

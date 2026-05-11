@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Orca Detailing — Upper Valley VT & NH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@700;800&family=Fraunces:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: #0C1929; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    img { display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    :root {
+      --navy:   #070E1C;
+      --navy2:  #0C1929;
+      --blue:   #2278B5;
+      --blue-l: #3A9CD6;
+      --blue-d: #155A8A;
+      --white:  #FFFFFF;
+      --off:    #F2F7FC;
+      --border: rgba(34,120,181,0.14);
+      --borderB:rgba(34,120,181,0.35);
+      --muted:  #6B8FA8;
+      --ts:     #4A7A9B;
+    }
+
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .blue-bar { height: 3px; background: linear-gradient(90deg, var(--blue), var(--blue-l)); border-radius: 2px; }
+
+    /* ── Buttons ── */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; letter-spacing: 0.04em; border-radius: 6px; cursor: pointer; transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s; position: relative; overflow: hidden; border: none; font-family: inherit; font-size: 14px; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn-blue { background: linear-gradient(135deg, var(--blue), var(--blue-d)); color: #fff; box-shadow: 0 4px 18px rgba(34,120,181,0.38); padding: 11px 22px; }
+    .btn-blue:hover { box-shadow: 0 8px 28px rgba(34,120,181,0.5); }
+    .btn-outline-blue { border: 2px solid var(--borderB) !important; color: var(--blue); padding: 10px 20px; background: transparent; }
+    .btn-outline-blue:hover { background: rgba(34,120,181,0.06); border-color: var(--blue) !important; }
+    .btn-outline-dark { border: 2px solid rgba(255,255,255,0.35) !important; color: #fff; padding: 10px 20px; background: transparent; }
+    .btn-outline-dark:hover { background: rgba(255,255,255,0.1); border-color: #fff !important; }
+    .btn-lg { font-size: 16px; padding: 15px 36px; border-radius: 8px; }
+    .btn-xl { font-size: 17px; padding: 17px 44px; border-radius: 8px; }
+    .ripple-spot { position:absolute; border-radius:50%; background:rgba(255,255,255,0.28); transform:scale(0); animation:rpl 0.55s linear; pointer-events:none; }
+    @keyframes rpl { to { transform:scale(5); opacity:0; } }
+
+    /* ══ NAV ══════════════════════════════════════════════════════════════ */
+    #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.96); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(34,120,181,0.1); box-shadow: 0 1px 20px rgba(12,25,41,0.07); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-link { font-size: 14px; font-weight: 600; color: var(--ts); transition: color 0.2s; position: relative; padding-bottom: 2px; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; right:0; height:2px; background:var(--blue); transform:scaleX(0); transform-origin:left; transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .nav-link:hover, .nav-link.active { color: var(--navy2); }
+    .nav-link:hover::after, .nav-link.active::after { transform:scaleX(1); }
+    .nav-ctas { display: flex; align-items: center; gap: 10px; }
+    #ham { display: none; background: none; border: none; cursor: pointer; padding: 6px; }
+    #mob-nav { display: none; flex-direction: column; padding: 20px 24px 28px; gap: 18px; border-top: 1px solid var(--border); background: #fff; }
+    #mob-nav.open { display: flex; }
+    .mob-link { font-size: 16px; font-weight: 600; color: var(--navy2); }
+    @media(max-width:768px){ .nav-links,.nav-ctas{display:none;} #ham{display:block;} }
+
+    /* ══ PAGE HERO ════════════════════════════════════════════════════════ */
+    #page-hero {
+      padding-top: 72px;
+      background: linear-gradient(160deg, #060D1A 0%, #0D1E36 55%, #07111F 100%);
+      position: relative; overflow: hidden;
+    }
+    #page-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 65% 80% at 15% 50%, rgba(34,120,181,0.2) 0%, transparent 65%); pointer-events:none; }
+    .hero-bubble { position:absolute; border-radius:50%; pointer-events:none; animation:brise linear infinite; }
+    @keyframes brise { 0%{transform:translateY(0) translateX(0);opacity:0} 8%{opacity:1} 92%{opacity:0.45} 100%{transform:translateY(-100vh) translateX(var(--dx));opacity:0} }
+    .page-hero-inner { position:relative; z-index:2; max-width:780px; padding:80px 24px 88px; }
+    .page-hero-label { font-size:11px; font-weight:700; letter-spacing:0.28em; color:var(--blue-l); text-transform:uppercase; margin-bottom:16px; }
+    .page-hero-h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(58px,9vw,108px); line-height:0.9; letter-spacing:-0.01em; color:#fff; margin-bottom:22px; }
+    .page-hero-h1 .acc { color:var(--blue-l); }
+    .page-hero-sub { font-size:18px; color:rgba(255,255,255,0.52); line-height:1.75; max-width:520px; }
+
+    /* ══ STATS STRIP ══════════════════════════════════════════════════════ */
+    #stats { background:var(--navy2); }
+    .stats-row { display:flex; }
+    .stat-item { flex:1; padding:28px 20px; text-align:center; border-right:1px solid rgba(255,255,255,0.06); }
+    .stat-item:last-child { border-right:none; }
+    .stat-num { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:44px; color:var(--blue-l); line-height:1; letter-spacing:-0.02em; }
+    .stat-lbl { font-size:11.5px; font-weight:600; color:rgba(255,255,255,0.4); letter-spacing:0.1em; margin-top:5px; text-transform:uppercase; }
+    @media(max-width:600px){ .stats-row{flex-wrap:wrap;} .stat-item{flex:1 1 50%;border-bottom:1px solid rgba(255,255,255,0.06);} }
+
+    /* ══ ORIGIN STORY ═════════════════════════════════════════════════════ */
+    #origin { background:#fff; padding:100px 24px; }
+    .origin-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
+    .origin-img-wrap { position:relative; }
+    .origin-img-frame { width:100%; aspect-ratio:4/5; background:var(--off); border-radius:24px; overflow:hidden; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:12px; position:relative; }
+    .origin-img-frame img { width:100%; height:100%; object-fit:cover; }
+    .origin-img-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:40px; text-align:center; }
+    .origin-img-placeholder p { font-size:13px; color:var(--muted); font-style:italic; }
+    .origin-year-badge { position:absolute; bottom:-18px; left:32px; background:linear-gradient(135deg,var(--blue),var(--blue-d)); color:#fff; border-radius:14px; padding:14px 22px; box-shadow:0 8px 28px rgba(34,120,181,0.38); }
+    .origin-year-badge .yr { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:34px; line-height:1; letter-spacing:-0.02em; }
+    .origin-year-badge .yr-lbl { font-size:11px; font-weight:600; letter-spacing:0.12em; opacity:0.8; text-transform:uppercase; margin-top:2px; }
+    .pull-quote { font-family:'Fraunces',serif; font-style:italic; font-size:clamp(22px,3vw,30px); color:var(--navy2); line-height:1.35; margin-bottom:28px; font-weight:300; }
+    .pull-quote span { color:var(--blue); }
+    .body-text { font-size:16px; color:var(--ts); line-height:1.85; margin-bottom:18px; }
+    @media(max-width:860px){ .origin-grid{grid-template-columns:1fr;} .origin-img-wrap{display:none;} }
+
+    /* ══ TIMELINE ════════════════════════════════════════════════════════ */
+    #timeline { background:var(--off); padding:96px 24px; }
+    .tl-header { text-align:center; margin-bottom:64px; }
+    .section-label { font-size:11px; font-weight:700; letter-spacing:0.24em; color:var(--blue); margin-bottom:10px; text-transform:uppercase; }
+    .section-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(34px,5vw,52px); line-height:1; color:var(--navy2); }
+    .tl-track { position:relative; max-width:680px; margin:0 auto; }
+    .tl-track::before { content:''; position:absolute; left:24px; top:0; bottom:0; width:2px; background:linear-gradient(180deg,var(--blue),var(--blue-l),rgba(34,120,181,0.1)); border-radius:2px; }
+    .tl-item { display:grid; grid-template-columns:60px 1fr; gap:28px; margin-bottom:48px; }
+    .tl-item:last-child { margin-bottom:0; }
+    .tl-dot-col { display:flex; flex-direction:column; align-items:center; padding-top:4px; }
+    .tl-dot { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--blue),var(--blue-d)); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 18px rgba(34,120,181,0.35); flex-shrink:0; z-index:1; }
+    .tl-body { padding-bottom:8px; }
+    .tl-year { font-size:11px; font-weight:700; letter-spacing:0.18em; color:var(--blue); text-transform:uppercase; margin-bottom:6px; }
+    .tl-title { font-family:'Bebas Neue',sans-serif; font-size:26px; color:var(--navy2); line-height:1.1; margin-bottom:10px; }
+    .tl-text { font-size:14.5px; color:var(--ts); line-height:1.75; }
+
+    /* ══ VALUES ══════════════════════════════════════════════════════════ */
+    #values { background:#fff; padding:96px 24px; }
+    .values-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:52px; }
+    .value-card { background:var(--off); border:1px solid var(--border); border-radius:18px; padding:32px 28px; transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.25s,border-color 0.25s; }
+    .value-card:hover { transform:translateY(-6px); box-shadow:0 12px 40px rgba(12,25,41,0.1),0 0 0 1px rgba(34,120,181,0.18); border-color:rgba(34,120,181,0.25); }
+    .value-icon { width:52px; height:52px; border-radius:14px; background:rgba(34,120,181,0.1); border:1px solid rgba(34,120,181,0.22); display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+    .value-title { font-size:17px; font-weight:700; color:var(--navy2); margin-bottom:10px; }
+    .value-text { font-size:13.5px; color:var(--ts); line-height:1.7; }
+    @media(max-width:720px){ .values-grid{grid-template-columns:1fr;} }
+
+    /* ══ MASCOT QUOTE ════════════════════════════════════════════════════ */
+    #quote-section { background:var(--navy); padding:88px 24px; position:relative; overflow:hidden; }
+    #quote-section::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(34,120,181,0.14) 0%,transparent 70%); pointer-events:none; }
+    .big-quote { position:relative; z-index:1; text-align:center; max-width:820px; margin:0 auto; }
+    .quote-mark { font-family:'Fraunces',serif; font-style:italic; font-size:120px; color:rgba(34,120,181,0.18); line-height:0.7; display:block; margin-bottom:-16px; }
+    .quote-text { font-family:'Fraunces',serif; font-style:italic; font-size:clamp(20px,3.2vw,32px); color:#fff; line-height:1.5; font-weight:300; }
+    .quote-text em { color:var(--blue-l); font-style:normal; font-weight:400; }
+    .quote-attr { font-size:13px; font-weight:700; letter-spacing:0.14em; color:rgba(255,255,255,0.4); text-transform:uppercase; margin-top:28px; }
+
+    /* ══ CTA ══════════════════════════════════════════════════════════════ */
+    #cta { padding:96px 24px; text-align:center; position:relative; overflow:hidden;
+      background:linear-gradient(135deg, #0A1628 0%, #112440 50%, #0A1628 100%); }
+    #cta::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 70% at 50% 50%,rgba(34,120,181,0.16) 0%,transparent 65%); pointer-events:none; }
+    .cta-content { position:relative; z-index:1; }
+
+    /* ══ FOOTER ═══════════════════════════════════════════════════════════ */
+    footer { background:#070E1C; border-top:1px solid rgba(34,120,181,0.12); padding:56px 24px 28px; }
+    .footer-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:48px; margin-bottom:40px; }
+    .footer-col h4 { font-size:11px; font-weight:700; letter-spacing:0.18em; color:rgba(255,255,255,0.45); text-transform:uppercase; margin-bottom:16px; }
+    .footer-links { display:flex; flex-direction:column; gap:10px; }
+    .footer-link { font-size:13.5px; color:rgba(255,255,255,0.45); transition:color 0.2s; }
+    .footer-link:hover { color:#fff; }
+    .footer-contact-item { display:flex; align-items:flex-start; gap:10px; font-size:13.5px; color:rgba(255,255,255,0.45); margin-bottom:12px; }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,0.06); padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+    @media(max-width:768px){ .footer-grid{grid-template-columns:1fr} }
+
+    /* Reveal */
+    .rev { opacity:0; transform:translateY(28px); transition:opacity 0.6s ease,transform 0.6s ease; }
+    .rev.in { opacity:1; transform:none; }
+    .rev-l { opacity:0; transform:translateX(-32px); transition:opacity 0.65s ease,transform 0.65s ease; }
+    .rev-l.in { opacity:1; transform:none; }
+    .rev-r { opacity:0; transform:translateX(32px); transition:opacity 0.65s ease,transform 0.65s ease; }
+    .rev-r.in { opacity:1; transform:none; }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════════════════════════ -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html"><img src="brand_assests/Gemini_Generated_Image_wtq0crwtq0crwtq0-removebg-preview%20(1).png" alt="Orca Detailing" style="height:72px;width:auto;"></a>
+      <div class="nav-links">
+        <a href="index.html#services" class="nav-link">Services</a>
+        <a href="gallery.html"        class="nav-link">Gallery</a>
+        <a href="index.html#pricing"  class="nav-link">Pricing</a>
+        <a href="about.html"          class="nav-link active">About</a>
+        <a href="book.html"           class="nav-link">Contact</a>
+      </div>
+      <div class="nav-ctas">
+        <a href="book.html"      class="btn btn-blue rip">BOOK NOW</a>
+        <a href="tel:6036780521" class="btn btn-outline-blue">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42A2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.72-.72a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          CALL US
+        </a>
+      </div>
+      <button id="ham" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0C1929" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mob-nav">
+    <a href="index.html#services" class="mob-link mlink">Services</a>
+    <a href="gallery.html"        class="mob-link mlink">Gallery</a>
+    <a href="index.html#pricing"  class="mob-link mlink">Pricing</a>
+    <a href="about.html"          class="mob-link mlink">About</a>
+    <a href="book.html"           class="mob-link mlink">Contact</a>
+    <div style="display:flex;gap:10px;margin-top:6px;">
+      <a href="book.html"      class="btn btn-blue rip mlink" style="flex:1;">BOOK NOW</a>
+      <a href="tel:6036780521" class="btn btn-outline-blue mlink" style="flex:1;">CALL US</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ PAGE HERO ══════════════════════════════════════════════════════════ -->
+<section id="page-hero">
+  <div id="hero-bbl" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;"></div>
+  <div class="container">
+    <div class="page-hero-inner">
+      <p class="page-hero-label">Orca Detailing · Our Story</p>
+      <h1 class="page-hero-h1">
+        BUILT FROM<br><span class="acc">PASSION.</span><br>PROVEN IN<br>THE DETAILS.
+      </h1>
+      <p class="page-hero-sub">What started as a middle school kid with a bucket and a dream has grown into one of the Upper Valley's most trusted mobile detailing services.</p>
+    </div>
+  </div>
+  <div style="line-height:0;position:relative;z-index:2;"><svg viewBox="0 0 1440 48" style="display:block;width:100%;" preserveAspectRatio="none"><path d="M0,24 C360,48 720,0 1080,32 C1280,46 1380,26 1440,18 L1440,48 L0,48Z" fill="#0C1929"/></svg></div>
+</section>
+
+<!-- ══ STATS STRIP ═════════════════════════════════════════════════════════ -->
+<div id="stats">
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-item rev"><div class="stat-num">100+</div><div class="stat-lbl">Cars Detailed</div></div>
+      <div class="stat-item rev"><div class="stat-num">3+</div><div class="stat-lbl">Years Experience</div></div>
+      <div class="stat-item rev"><div class="stat-num">5★</div><div class="stat-lbl">Average Rating</div></div>
+      <div class="stat-item rev"><div class="stat-num">0</div><div class="stat-lbl">Unhappy Customers</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Wave navy → white -->
+<div style="background:var(--navy2);line-height:0;"><svg viewBox="0 0 1440 40" style="display:block;width:100%;" preserveAspectRatio="none"><path d="M0,20 C360,42 720,0 1080,28 C1280,42 1380,22 1440,16 L1440,40 L0,40Z" fill="#fff"/></svg></div>
+
+<!-- ══ ORIGIN STORY ═════════════════════════════════════════════════════════ -->
+<section id="origin">
+  <div class="container">
+    <div class="origin-grid">
+
+      <!-- Image left -->
+      <div class="origin-img-wrap rev-l">
+        <div class="origin-img-frame">
+          <!-- Replace with a real photo of you working -->
+          <div class="origin-img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(34,120,181,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <p>Drop your photo here</p>
+          </div>
+        </div>
+        <div class="origin-year-badge">
+          <div class="yr">2021</div>
+          <div class="yr-lbl">Where it began</div>
+        </div>
+      </div>
+
+      <!-- Text right -->
+      <div class="rev-r">
+        <p style="font-size:11px;font-weight:700;letter-spacing:0.24em;color:var(--blue);text-transform:uppercase;margin-bottom:14px;">How It Started</p>
+        <p class="pull-quote">"It started in a driveway. In middle school. With a bucket, some soap, and an <span>obsession with clean.</span>"</p>
+        <div class="blue-bar" style="width:56px;margin-bottom:28px;"></div>
+        <p class="body-text">Most kids in middle school are worried about homework or video games. I was outside detailing cars. It started simply — a neighbor's car here, a family friend's SUV there — but from the first time I saw a dull, road-worn vehicle transform into something that looked fresh off the lot, I was hooked.</p>
+        <p class="body-text">I reinvested every dollar back into better products and equipment. I learned everything I could about paint care, interior cleaning, and what it actually takes to do the job right — not just fast. Word spread through the neighborhood, then the town, then across the Upper Valley.</p>
+        <p class="body-text">After over three years and more than 100 cars, Orca Detailing isn't just something I do — it's who I am. Every job gets the same care and attention as the very first one.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:36px;">
+          <a href="book.html" class="btn btn-blue btn-lg rip">BOOK YOUR DETAIL</a>
+          <a href="gallery.html" class="btn btn-outline-blue btn-lg">SEE THE WORK</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Wave white → off-white -->
+<div style="background:#fff;line-height:0;"><svg viewBox="0 0 1440 40" style="display:block;width:100%;" preserveAspectRatio="none"><path d="M0,18 C360,42 720,0 1080,26 C1280,40 1380,20 1440,14 L1440,40 L0,40Z" fill="#F2F7FC"/></svg></div>
+
+<!-- ══ TIMELINE ══════════════════════════════════════════════════════════════ -->
+<section id="timeline">
+  <div class="container">
+    <div class="tl-header rev">
+      <p class="section-label">THE JOURNEY</p>
+      <h2 class="section-title">FROM DRIVEWAY TO DOORSTEP</h2>
+      <div class="blue-bar" style="width:64px;margin:14px auto 0;"></div>
+    </div>
+    <div class="tl-track">
+
+      <div class="tl-item rev">
+        <div class="tl-dot-col">
+          <div class="tl-dot">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+        </div>
+        <div class="tl-body">
+          <div class="tl-year">Year One · Middle School</div>
+          <div class="tl-title">THE FIRST DETAIL</div>
+          <p class="tl-text">It started with a single car and a curiosity about what was possible with the right products and some serious elbow grease. The results spoke for themselves — and so did the people who saw them.</p>
+        </div>
+      </div>
+
+      <div class="tl-item rev">
+        <div class="tl-dot-col">
+          <div class="tl-dot">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+        </div>
+        <div class="tl-body">
+          <div class="tl-year">Year Two · Word Spread</div>
+          <div class="tl-title">BUILDING A REPUTATION</div>
+          <p class="tl-text">Referrals started coming in faster than I could keep up with. I upgraded my equipment, expanded the services I offered, and started treating every booking like a business — because it was becoming one.</p>
+        </div>
+      </div>
+
+      <div class="tl-item rev">
+        <div class="tl-dot-col">
+          <div class="tl-dot">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+        </div>
+        <div class="tl-body">
+          <div class="tl-year">Year Three · Going Mobile</div>
+          <div class="tl-title">ORCA DETAILING IS BORN</div>
+          <p class="tl-text">The brand launched. Fully mobile, fully equipped, serving all of the Upper Valley across Vermont and New Hampshire. No shop needed — I bring everything to you, exactly when you need it.</p>
+        </div>
+      </div>
+
+      <div class="tl-item rev">
+        <div class="tl-dot-col">
+          <div class="tl-dot" style="background:linear-gradient(135deg,#16A34A,#15803D);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+        </div>
+        <div class="tl-body">
+          <div class="tl-year" style="color:#16A34A;">Today · 100+ Cars Strong</div>
+          <div class="tl-title">STILL RAISING THE BAR</div>
+          <p class="tl-text">Over a hundred vehicles detailed, a growing list of happy customers across the Upper Valley, and the same drive that started it all — to make every car look its absolute best. The journey is just getting started.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Wave off-white → white -->
+<div style="background:#F2F7FC;line-height:0;"><svg viewBox="0 0 1440 40" style="display:block;width:100%;" preserveAspectRatio="none"><path d="M0,10 C300,40 600,0 900,26 C1100,40 1300,14 1440,22 L1440,40 L0,40Z" fill="#fff"/></svg></div>
+
+<!-- ══ VALUES ════════════════════════════════════════════════════════════════ -->
+<section id="values">
+  <div class="container">
+    <div class="rev" style="text-align:center;">
+      <p class="section-label">WHAT DRIVES US</p>
+      <h2 class="section-title">THE ORCA STANDARD</h2>
+      <div class="blue-bar" style="width:60px;margin:14px auto 0;"></div>
+    </div>
+    <div class="values-grid">
+      <div class="value-card rev">
+        <div class="value-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="value-title">No Shortcuts</div>
+        <p class="value-text">Every car gets the full treatment. I don't rush, I don't cut corners, and I don't leave until the job is done right. Your vehicle deserves that.</p>
+      </div>
+      <div class="value-card rev">
+        <div class="value-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <div class="value-title">You'll Actually Love It</div>
+        <p class="value-text">I started this because I loved the results. That passion shows in every single job. If you're not amazed when I'm done, we'll make it right — full stop.</p>
+      </div>
+      <div class="value-card rev">
+        <div class="value-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>
+        </div>
+        <div class="value-title">We Come to You</div>
+        <p class="value-text">No drop-offs, no waiting rooms, no inconvenience. I bring everything to your driveway, office, or wherever works — you just unlock the car.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave white → navy -->
+<div style="background:#fff;line-height:0;"><svg viewBox="0 0 1440 40" style="display:block;width:100%;" preserveAspectRatio="none"><path d="M0,22 C360,42 720,0 1080,28 C1280,42 1380,22 1440,14 L1440,40 L0,40Z" fill="#070E1C"/></svg></div>
+
+<!-- ══ QUOTE ══════════════════════════════════════════════════════════════ -->
+<section id="quote-section">
+  <div class="big-quote rev">
+    <span class="quote-mark">"</span>
+    <p class="quote-text">I didn't start this to make money. I started it because I loved watching a <em>dirty, tired car</em> become something its owner was proud to drive again. Three years and a hundred cars later — that feeling hasn't changed for a single second.</p>
+    <p class="quote-attr">— Founder, Orca Detailing · Upper Valley</p>
+  </div>
+</section>
+
+<!-- Wave navy → dark CTA -->
+<div style="background:#070E1C;line-height:0;"><svg viewBox="0 0 1440 40" style="display:block;width:100%;" preserveAspectRatio="none"><path d="M0,18 C360,40 720,2 1080,28 C1280,42 1380,22 1440,16 L1440,40 L0,40Z" fill="#0A1628"/></svg></div>
+
+<!-- ══ CTA ════════════════════════════════════════════════════════════════ -->
+<section id="cta">
+  <div class="cta-content rev">
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.24em;color:var(--blue-l);text-align:center;margin-bottom:12px;text-transform:uppercase;">Ready to Experience It?</p>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,68px);color:#fff;text-align:center;margin-bottom:20px;line-height:1.05;">YOUR CAR IS NEXT.<br><span style="color:var(--blue-l);">LET'S MAKE IT SHINE.</span></h2>
+    <p style="text-align:center;font-size:16px;color:rgba(255,255,255,0.55);max-width:420px;margin:0 auto 40px;line-height:1.7;">Three years of experience, 100+ happy customers, and the same obsession with clean that started it all. Book online in minutes.</p>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+      <a href="book.html" class="btn btn-blue btn-xl rip">BOOK NOW</a>
+      <a href="tel:6036780521" class="btn btn-outline-dark btn-xl">CALL (603) 678-0521</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img src="brand_assests/Gemini_Generated_Image_wtq0crwtq0crwtq0-removebg-preview%20(1).png" alt="Orca Detailing" style="height:72px;margin-bottom:16px;">
+        <p style="font-size:13.5px;color:rgba(255,255,255,0.4);line-height:1.75;max-width:280px;">Premium mobile car detailing serving the Upper Valley region of Vermont and New Hampshire.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <div class="footer-links">
+          <a href="index.html#services"     class="footer-link">Services</a>
+          <a href="gallery.html"            class="footer-link">Gallery</a>
+          <a href="index.html#pricing"      class="footer-link">Pricing</a>
+          <a href="about.html"              class="footer-link">About Us</a>
+          <a href="index.html#testimonials" class="footer-link">Reviews</a>
+          <a href="book.html"               class="footer-link">Book Now</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <div class="footer-contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue-l)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42A2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.72-.72a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <a href="tel:6036780521" style="color:rgba(255,255,255,0.4);transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">(603) 678-0521</a>
+        </div>
+        <div class="footer-contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue-l)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Upper Valley<br>Vermont &amp; New Hampshire</span>
+        </div>
+        <div class="footer-contact-item" style="align-items:center;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue-l)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Mon – Sat, 7am – 6pm</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p style="font-size:12px;color:rgba(255,255,255,0.25);">&copy; 2025 Orca Detailing. All rights reserved.</p>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.25);">Upper Valley · Vermont · New Hampshire</p>
+        <a href="admin.html" style="font-size:11px;color:rgba(34,120,181,0.3);transition:color 0.2s;" onmouseover="this.style.color='rgba(34,120,181,0.6)'" onmouseout="this.style.color='rgba(34,120,181,0.3)'">Admin</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('ham').addEventListener('click',()=>document.getElementById('mob-nav').classList.toggle('open'));
+document.querySelectorAll('.mlink').forEach(l=>l.addEventListener('click',()=>document.getElementById('mob-nav').classList.remove('open')));
+
+// Hero bubbles
+(function(){
+  const c=document.getElementById('hero-bbl');
+  for(let i=0;i<28;i++){
+    const b=document.createElement('div');
+    b.className='hero-bubble';
+    const sz=Math.random()*36+8;
+    const op=Math.random()*.2+.12;
+    const bop=Math.random()*.38+.24;
+    const dx=(Math.random()-.5)*120;
+    b.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:-${sz}px;`+
+      `background:rgba(34,120,181,${op});border:1.5px solid rgba(34,120,181,${bop});`+
+      `box-shadow:inset ${-sz*.1}px ${-sz*.1}px ${sz*.28}px rgba(255,255,255,0.36),`+
+              `0 0 ${sz*.4}px rgba(34,120,181,${op*.5});`+
+      `--dx:${dx}px;animation-duration:${Math.random()*14+8}s;animation-delay:${Math.random()*14}s;`;
+    c.appendChild(b);
+  }
+})();
+
+// Scroll reveal
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('in'),i*70); ro.unobserve(e.target); }
+  });
+},{threshold:0.07});
+document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(el=>ro.observe(el));
+
+// Ripple
+document.querySelectorAll('.rip').forEach(btn=>btn.addEventListener('click',function(e){
+  const r=document.createElement('span'); r.className='ripple-spot';
+  const rect=this.getBoundingClientRect(); const s=Math.max(rect.width,rect.height)*2;
+  r.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-rect.left-s/2}px;top:${e.clientY-rect.top-s/2}px;`;
+  this.appendChild(r); setTimeout(()=>r.remove(),700);
+}));
+</script>
+</body>
+</html>
