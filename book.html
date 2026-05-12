@@ -77,6 +77,7 @@
     #booking-section { background: var(--off); padding: 56px 24px 80px; }
     .booking-layout { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 360px; gap: 40px; align-items: start; }
     @media(max-width:900px){ .booking-layout{grid-template-columns:1fr;} .booking-summary-col{position:static!important;} }
+    @media(max-width:640px){ #booking-section{padding:40px 16px 56px;} .page-hero-inner{height:160px;} }
 
     /* ── Step headings ── */
     .step-block { margin-bottom: 36px; }
@@ -956,7 +957,8 @@ ${notes}
 });
 
 // ─── Reveal on scroll ─────────────────────────────────────────────────
-const ro = new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*70);ro.unobserve(e.target);}});},{threshold:0.06});
+const ro = new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*60);ro.unobserve(e.target);}});},{threshold:0,rootMargin:'0px 0px 200px 0px'});
+setTimeout(()=>document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(el=>el.classList.add('in')),900);
 document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
 
 // ─── Date min = today ─────────────────────────────────────────────────

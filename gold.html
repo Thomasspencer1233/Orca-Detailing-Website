@@ -195,6 +195,26 @@
     .rev-l.in { opacity:1; transform:none; }
     .rev-r { opacity:0; transform:translateX(28px); transition:opacity 0.6s ease,transform 0.6s ease; }
     .rev-r.in { opacity:1; transform:none; }
+
+    /* ══ MOBILE OVERRIDES ════════════════════════════════════════════════ */
+    @media(max-width:640px){
+      .hero-left { padding: 48px 20px 48px; }
+      .hero-h1 { font-size: 56px; }
+      .hero-sub { font-size: 15px; }
+      .hero-stats { gap: 20px; flex-wrap: wrap; }
+      #services { padding: 48px 24px; }
+      .svc-header { margin-bottom: 36px; }
+      #pricing { padding: 52px 24px; }
+      .pricing-header { margin-bottom: 36px; }
+      #addons { padding: 44px 24px; }
+      .addons-header { margin-bottom: 32px; }
+      #testimonials { padding: 52px 24px; }
+      .test-header { margin-bottom: 32px; }
+      .test-quote { font-size: 17px; }
+      #areas { padding: 48px 24px; }
+      #cta { padding: 60px 24px; }
+      #cta::before { font-size: 120px; }
+    }
   </style>
 </head>
 <body>
@@ -547,7 +567,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click
 
 const ro = new IntersectionObserver(entries => {
   entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('in'), i * 80); ro.unobserve(e.target); } });
-}, { threshold: 0.08 });
+}, { threshold: 0, rootMargin: '0px 0px 200px 0px' });
+setTimeout(()=>document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(el=>el.classList.add('in')),900);
 document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(el => ro.observe(el));
 
 document.querySelectorAll('.rip').forEach(btn => btn.addEventListener('click', function(e) {

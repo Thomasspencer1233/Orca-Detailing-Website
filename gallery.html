@@ -163,6 +163,17 @@
     .footer-contact-item { display:flex; align-items:flex-start; gap:10px; font-size:13.5px; color:rgba(255,255,255,0.45); margin-bottom:12px; }
     .footer-bottom { border-top:1px solid rgba(255,255,255,0.06); padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
     @media(max-width:768px){ .footer-grid{grid-template-columns:1fr} }
+
+    /* ══ MOBILE OVERRIDES ════════════════════════════════════════════════ */
+    @media(max-width:640px){
+      .page-hero-inner { padding: 48px 24px 56px; }
+      #gallery-section { padding: 40px 16px 56px; }
+      .photo-grid { column-gap: 12px; }
+      .photo-card { margin-bottom: 12px; }
+      #cta { padding: 60px 24px; }
+      #filter-bar { top: 72px; }
+      .filter-btn { font-size: 12px; padding: 7px 14px; }
+    }
   </style>
 </head>
 <body>
@@ -453,7 +464,8 @@ const ro=new IntersectionObserver(entries=>{
   entries.forEach((e,i)=>{
     if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('in'),i*60); ro.unobserve(e.target); }
   });
-},{threshold:0.07});
+},{threshold:0,rootMargin:'0px 0px 200px 0px'});
+setTimeout(()=>document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(el=>el.classList.add('in')),900);
 document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
 
 // Ripple

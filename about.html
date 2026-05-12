@@ -160,6 +160,20 @@
     .rev-l.in { opacity:1; transform:none; }
     .rev-r { opacity:0; transform:translateX(32px); transition:opacity 0.65s ease,transform 0.65s ease; }
     .rev-r.in { opacity:1; transform:none; }
+
+    /* ══ MOBILE OVERRIDES ════════════════════════════════════════════════ */
+    @media(max-width:640px){
+      .page-hero-inner { padding: 48px 24px 56px; }
+      .page-hero-h1 { font-size: 64px; }
+      .page-hero-sub { font-size: 16px; }
+      #origin { padding: 52px 24px; }
+      #timeline { padding: 52px 24px; }
+      #values { padding: 52px 24px; }
+      #quote-section { padding: 52px 24px; }
+      #cta { padding: 60px 24px; }
+      .pull-quote { font-size: 20px; }
+      .quote-text { font-size: 18px; }
+    }
   </style>
 </head>
 <body>
@@ -474,9 +488,10 @@ document.querySelectorAll('.mlink').forEach(l=>l.addEventListener('click',()=>do
 // Scroll reveal
 const ro=new IntersectionObserver(entries=>{
   entries.forEach((e,i)=>{
-    if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('in'),i*70); ro.unobserve(e.target); }
+    if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('in'),i*60); ro.unobserve(e.target); }
   });
-},{threshold:0.07});
+},{threshold:0,rootMargin:'0px 0px 200px 0px'});
+setTimeout(()=>document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(el=>el.classList.add('in')),900);
 document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(el=>ro.observe(el));
 
 // Ripple

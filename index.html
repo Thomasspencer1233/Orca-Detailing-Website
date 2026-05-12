@@ -245,6 +245,26 @@
     .form-input option { background:#fff; }
     .form-row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
     @media(max-width:540px){ .form-row2{grid-template-columns:1fr} }
+
+    /* ══ MOBILE OVERRIDES ════════════════════════════════════════════════ */
+    @media(max-width:640px){
+      .hero-content { padding: 36px 20px 52px; }
+      .hero-h1 { font-size: 58px; }
+      .hero-sub { font-size: 16px; }
+      .btn-xl { font-size: 15px; padding: 14px 28px; }
+      #intro { padding: 52px 24px; }
+      #services { padding: 52px 24px; }
+      #how { padding: 52px 24px; }
+      #testimonials { padding: 52px 24px; }
+      #pricing { padding: 52px 24px; }
+      #addons { padding: 44px 24px; }
+      #areas { padding: 52px 24px; }
+      #cta { padding: 60px 24px; }
+      .monthly-banner { padding: 24px 20px; gap: 20px; }
+      .monthly-price-big { font-size: 60px; }
+      .pricing-grid { max-width: 100%; }
+      .p-price-num { font-size: 48px; }
+    }
   </style>
 </head>
 <body>
@@ -698,7 +718,8 @@ document.querySelectorAll('.mlink').forEach(l=>l.addEventListener('click',()=>do
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}}));
 
 // Reveal
-const ro=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*80);ro.unobserve(e.target);}});},{threshold:0.08});
+const ro=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*60);ro.unobserve(e.target);}});},{threshold:0,rootMargin:'0px 0px 200px 0px'});
+setTimeout(()=>document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(el=>el.classList.add('in')),900);
 document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(el=>ro.observe(el));
 
 // Ripple
