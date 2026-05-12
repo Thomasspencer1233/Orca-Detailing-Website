@@ -347,13 +347,7 @@
         <!-- Time -->
         <div>
           <label class="fl">Time</label>
-          <select id="e-time" class="fi">
-            <option>Morning (7–9am)</option>
-            <option>Mid-Morning (9–11am)</option>
-            <option>Afternoon (12–2pm)</option>
-            <option>Late Afternoon (2–5pm)</option>
-            <option>TBD</option>
-          </select>
+          <input type="time" id="e-time" class="fi" placeholder="—">
         </div>
 
         <!-- Customer -->
@@ -643,7 +637,7 @@ function renderJobs() {
   empty.style.display='none';
   tbody.innerHTML = jobs.map(j=>`
     <tr>
-      <td>${formatDate(j.date)}<br><span style="font-size:11px;color:var(--muted);">${j.time||''}</span></td>
+      <td>${formatDate(j.date)}<br><span style="font-size:11px;color:var(--muted);">${formatTime(j.time)}</span></td>
       <td><div style="font-weight:600;">${j.customer.name}</div><div style="font-size:12px;color:var(--ts);">${j.customer.phone||''}</div></td>
       <td>${j.service||'—'}<br><span style="font-size:11px;color:var(--muted);">${(j.addons||[]).join(', ')||''}</span></td>
       <td>${j.vehicle?`${j.vehicle.year||''} ${j.vehicle.make||''} ${j.vehicle.model||''}`.trim()||j.vehicle.type:'—'}</td>
@@ -739,7 +733,7 @@ function editEntry(id) {
   document.getElementById('e-type').value = j.type||'job';
   document.getElementById('e-status').value = j.status;
   document.getElementById('e-date').value = j.date;
-  document.getElementById('e-time').value = j.time||'Morning (7–9am)';
+  document.getElementById('e-time').value = j.time||'';
   document.getElementById('e-name').value = j.customer.name;
   document.getElementById('e-phone').value = j.customer.phone||'';
   document.getElementById('e-email').value = j.customer.email||'';
@@ -819,6 +813,13 @@ function formatDate(str) {
   if (!str) return '—';
   const d = new Date(str+'T12:00:00');
   return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+function formatTime(str) {
+  if (!str) return '';
+  const [h, m] = str.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const hour = h % 12 || 12;
+  return `${hour}:${String(m).padStart(2,'0')} ${ampm}`;
 }
 function statusLabel(s) {
   return {quote:'Quote',booked:'Booked','in-progress':'In Progress',completed:'Completed',invoiced:'Invoiced',cancelled:'Cancelled'}[s]||s;
