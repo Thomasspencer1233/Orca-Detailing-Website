@@ -8,9 +8,9 @@
   <link rel="manifest" href="manifest.json">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Orca Admin">
-  <meta name="theme-color" content="#2278B5">
+  <meta name="theme-color" content="#ffffff">
   <link rel="apple-touch-icon" href="brand_assests/Gemini_Generated_Image_wtq0crwtq0crwtq0-removebg-preview%20(1).png">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -45,7 +45,9 @@
     #login-err{color:var(--red);font-size:13px;margin-top:8px;display:none;}
 
     /* APP SHELL */
-    #app{display:flex;height:100vh;overflow:hidden;}
+    #app{display:flex;height:100%;overflow:hidden;}
+    /* Safe area for PWA (notch + home indicator) */
+    body{padding-top:env(safe-area-inset-top,0px);}
 
     /* SIDEBAR */
     #sidebar{width:220px;flex-shrink:0;background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;box-shadow:1px 0 0 var(--border);}
@@ -67,16 +69,18 @@
     .sync-dot.err{background:var(--red);}
 
     /* BOTTOM NAV (mobile) */
-    #bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;background:#fff;border-top:1px solid var(--border);z-index:200;padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -1px 12px rgba(12,25,41,0.07);}
-    .bnav-inner{display:flex;height:60px;}
-    .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;font-weight:600;color:var(--muted);cursor:pointer;transition:color 0.2s;letter-spacing:0.04em;text-transform:uppercase;border:none;background:none;}
+    #bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);z-index:200;box-shadow:0 -1px 12px rgba(12,25,41,0.07);}
+    .bnav-inner{display:flex;height:58px;}
+    .bnav-safe{height:env(safe-area-inset-bottom,0px);background:#fff;}
+    .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:9px;font-weight:700;color:var(--muted);cursor:pointer;transition:color 0.2s;letter-spacing:0.05em;text-transform:uppercase;border:none;background:none;padding:0;}
     .bnav-item.active{color:var(--blue);}
-    .bnav-item svg{width:20px;height:20px;}
+    .bnav-item svg{width:22px;height:22px;}
 
     /* MAIN */
     #main{flex:1;overflow-y:auto;display:flex;flex-direction:column;}
-    .topbar{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:60px;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:10px;box-shadow:var(--shadow);}
-    .topbar-title{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--navy2);white-space:nowrap;}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:56px;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;gap:10px;box-shadow:var(--shadow);}
+    .topbar-title{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--navy2);white-space:nowrap;}
+    .topbar-utils{display:flex;gap:6px;align-items:center;}  /* hidden on mobile */
     .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:7px;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:transform 0.18s,box-shadow 0.18s,opacity 0.15s;letter-spacing:0.03em;white-space:nowrap;}
     .btn:hover{transform:translateY(-1px);}
     .btn:active{transform:translateY(0);}
@@ -266,7 +270,8 @@
     @media(max-width:768px){
       #sidebar{display:none;}
       #bottom-nav{display:block;}
-      #main{padding-bottom:60px;}
+      #main{padding-bottom:calc(58px + env(safe-area-inset-bottom,0px));}
+      .topbar-utils{display:none;}
       .content{padding:14px;}
       .stat-cards{grid-template-columns:1fr 1fr;}
       .dashboard-grid{grid-template-columns:1fr;}
@@ -355,9 +360,11 @@
     <div class="topbar">
       <div class="topbar-title" id="topbar-title">Dashboard</div>
       <div style="display:flex;gap:8px;align-items:center;">
-        <button class="btn btn-ghost btn-sm" onclick="exportData()" title="Export data" style="padding:8px 10px;">&#8595;</button>
-        <label class="btn btn-ghost btn-sm" style="padding:8px 10px;cursor:pointer;" title="Import data">&#8593;<input type="file" accept=".json" style="display:none;" onchange="importData(this)"></label>
-        <button class="btn btn-ghost btn-sm" onclick="openSyncPanel()" title="Cloud Sync" style="padding:8px 10px;">&#9729;</button>
+        <div class="topbar-utils">
+          <button class="btn btn-ghost btn-sm" onclick="exportData()" title="Export" style="padding:7px 9px;">&#8595;</button>
+          <label class="btn btn-ghost btn-sm" style="padding:7px 9px;cursor:pointer;" title="Import">&#8593;<input type="file" accept=".json" style="display:none;" onchange="importData(this)"></label>
+          <button class="btn btn-ghost btn-sm" onclick="openSyncPanel()" title="Cloud Sync" style="padding:7px 9px;">&#9729;</button>
+        </div>
         <button class="btn btn-blue" onclick="openModal()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Add Job
@@ -465,7 +472,7 @@
 
 <!-- BOTTOM NAV (mobile) -->
 <div id="bottom-nav">
-  <div class="bnav-inner">
+  <div class="bnav-inner" id="bnav-inner">
     <button class="bnav-item active" data-tab="dashboard" onclick="showTabMobile(this,'dashboard')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       Home
@@ -482,7 +489,12 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
       Clients
     </button>
+    <button class="bnav-item" onclick="openSyncPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+      More
+    </button>
   </div>
+  <div class="bnav-safe"></div>
 </div>
 
 <!-- JOB MODAL -->
