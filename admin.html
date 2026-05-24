@@ -243,6 +243,25 @@
     .sync-box ol{font-size:13px;color:var(--ts);line-height:2;margin-bottom:20px;padding-left:20px;}
     .sync-box ol li{margin-bottom:2px;}
 
+    /* MOBILE CALENDAR AGENDA */
+    .cal-agenda{display:none;}
+    .agenda-day{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow);}
+    .agenda-day-header{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--border);background:var(--off);}
+    .agenda-day-date{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--navy2);}
+    .agenda-day-dow{font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--ts);text-transform:uppercase;}
+    .agenda-day-header.today-header{background:rgba(34,120,181,0.07);border-bottom-color:var(--borderB);}
+    .agenda-day-header.today-header .agenda-day-date{color:var(--blue);}
+    .agenda-event{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--border);cursor:pointer;}
+    .agenda-event:last-child{border-bottom:none;}
+    .agenda-event:active{background:var(--off);}
+    .agenda-event-name{font-size:14px;font-weight:600;color:var(--navy2);}
+    .agenda-event-meta{font-size:12px;color:var(--ts);margin-top:2px;}
+    .agenda-event-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+    .agenda-event-price{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--blue);}
+    .agenda-empty{padding:14px;font-size:13px;color:var(--muted);text-align:center;}
+    .agenda-add-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;font-size:13px;font-weight:600;color:var(--blue);cursor:pointer;border-top:1px solid var(--border);background:none;border-left:none;border-right:none;border-bottom:none;width:100%;}
+    .agenda-add-btn:active{background:var(--off);}
+
     /* RESPONSIVE */
     @media(max-width:768px){
       #sidebar{display:none;}
@@ -263,7 +282,10 @@
       .topbar-title{font-size:20px;}
       .btn{padding:8px 13px;font-size:12px;}
       .timer-display{font-size:40px;}
-      .cal-cell{min-height:50px;}
+      /* Hide grid calendar, show agenda */
+      #cal-dow{display:none;}
+      #cal-cells{display:none;}
+      .cal-agenda{display:block;}
     }
     @media(max-width:480px){
       .stat-cards{grid-template-columns:1fr;}
@@ -384,6 +406,8 @@
         </div>
         <div class="cal-grid" id="cal-dow"></div>
         <div class="cal-grid" id="cal-cells" style="margin-top:4px;"></div>
+        <!-- Mobile agenda view -->
+        <div class="cal-agenda" id="cal-agenda"></div>
       </div>
 
       <!-- JOBS -->
@@ -1133,9 +1157,53 @@ function renderCalendar(){
   const rem=(7-(first.getDay()+last.getDate())%7)%7;
   for(let i=1;i<=rem;i++)cells+=`<div class="cal-cell other-month"><div class="cal-day-num">${i}</div></div>`;
   document.getElementById('cal-cells').innerHTML=cells;
+  renderAgenda();
 }
 function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
 function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();}
+
+function renderAgenda() {
+  const agenda = document.getElementById('cal-agenda');
+  if (!agenda) return;
+  const jobs = getData();
+  const now = new Date();
+  const last = new Date(calYear, calMonth+1, 0).getDate();
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let html = '';
+  for (let d = 1; d <= last; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dayJobs = jobs.filter(j => j.date === dateStr);
+    const dt = new Date(calYear, calMonth, d);
+    const isToday = d === now.getDate() && calMonth === now.getMonth() && calYear === now.getFullYear();
+    // Skip empty days that aren't today (keep agenda clean)
+    if (!dayJobs.length && !isToday) continue;
+    html += `<div class="agenda-day">
+      <div class="agenda-day-header${isToday?' today-header':''}">
+        <div class="agenda-day-date">${days[dt.getDay()]} ${d}</div>
+        ${isToday?'<span style="font-size:10px;font-weight:700;color:var(--blue);letter-spacing:0.1em;text-transform:uppercase;">Today</span>':''}
+      </div>`;
+    if (dayJobs.length) {
+      dayJobs.forEach(j => {
+        html += `<div class="agenda-event" onclick="editEntry('${j.id}')">
+          <div>
+            <div class="agenda-event-name">${j.customer.name}</div>
+            <div class="agenda-event-meta">${j.service||'Custom'}${j.time?' · '+formatTime(j.time):''}</div>
+          </div>
+          <div class="agenda-event-right">
+            <span class="badge badge-${j.status}">${statusLabel(j.status)}</span>
+            <span class="agenda-event-price">$${(j.price||0).toLocaleString()}</span>
+          </div>
+        </div>`;
+      });
+    } else {
+      html += `<div class="agenda-empty">No jobs scheduled</div>`;
+    }
+    html += `<button class="agenda-add-btn" onclick="openModalDate('${dateStr}')">+ Add Job</button>
+    </div>`;
+  }
+  if (!html) html = `<div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:14px;">No jobs this month.<br>Tap a date on the grid or use Add Job.</div>`;
+  agenda.innerHTML = html;
+}
 
 // ════════════════════════════════════════════
 // JOBS

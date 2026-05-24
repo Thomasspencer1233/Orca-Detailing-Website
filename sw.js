@@ -1,4 +1,4 @@
-const CACHE = 'orca-admin-v1';
+const CACHE = 'orca-admin-v3';
 const SHELL = [
   '/admin.html',
   'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap'
