@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Orca Detailing — Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Orca Admin">
+  <meta name="theme-color" content="#2278B5">
+  <link rel="apple-touch-icon" href="brand_assests/Gemini_Generated_Image_wtq0crwtq0crwtq0-removebg-preview%20(1).png">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{height:100%;-webkit-font-smoothing:antialiased;}
@@ -344,7 +351,7 @@
           <div class="timer-display-lg" id="atc-display">00:00:00</div>
           <div class="timer-meta">
             <span class="timer-earn" id="atc-earned">$0.00 earned</span>
-            &nbsp;·&nbsp; <span id="atc-rate" style="color:var(--ts);">$87.50/hr</span>
+            &nbsp;·&nbsp; <span id="atc-rate" style="color:var(--ts);">$100/hr</span>
           </div>
           <div style="display:flex;gap:8px;margin-top:10px;">
             <button class="btn btn-ghost btn-sm" onclick="pauseTimer()" id="atc-pause">Pause</button>
@@ -815,7 +822,7 @@ function uid() { return Date.now().toString(36) + Math.random().toString(36).sli
 // ════════════════════════════════════════════
 // TIMER
 // ════════════════════════════════════════════
-const RATE = 87.5; // $/hr avg of $75-100
+const RATE = 100; // $/hr
 let timerInterval = null;
 let timerState = JSON.parse(localStorage.getItem('orca_timer') || 'null');
 // timerState = { jobId, startTime (ms, null if paused), accumulated (ms) }
@@ -878,7 +885,7 @@ function stopTimer(silent) {
     const timeStr = formatMs(ms);
     const earned = (hrs * RATE).toFixed(2);
     j.timerMs = ms;
-    j.timerLog = `Timer: ${timeStr} ($${earned} @ $87.50/hr)`;
+    j.timerLog = `Timer: ${timeStr} ($${earned} @ $100/hr)`;
     saveData(jobs);
   }
   timerState = null;
@@ -1277,7 +1284,7 @@ function editEntry(id){
   const price = j.price || 0;
   const estHrs = price > 0 ? (price / RATE).toFixed(1) : null;
   const estEl = document.getElementById('modal-timer-est');
-  if(estEl && estHrs) estEl.textContent=`Est. ${estHrs} hrs for a $${price} job at $87.50/hr`;
+  if(estEl && estHrs) estEl.textContent=`Est. ${estHrs} hrs for a $${price} job at $100/hr`;
   else if(estEl) estEl.textContent='';
 
   // Load timer display
@@ -1347,6 +1354,10 @@ function formatTime(str){if(!str)return'';const[h,m]=str.split(':').map(Number);
 function statusLabel(s){return{quote:'Quote',booked:'Booked','in-progress':'In Progress',completed:'Completed',invoiced:'Invoiced',cancelled:'Cancelled'}[s]||s;}
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+}
 
 // ════════════════════════════════════════════
 // EXPORT / IMPORT
